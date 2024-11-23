@@ -10,8 +10,9 @@
     <link href="css/style.css" type="text/css" rel="stylesheet">
     
     <script type="text/javascript">
-      (function () {
+      $(function() {
         function renderJson() {
+          console.log('OK')
           try {
             var input = eval('(' + $('#configuration').val() + ')');
           }
@@ -26,12 +27,17 @@
           };
           $('#json-renderer').jsonViewer(input, options);
         }
-
         // Generate on click
         $('#btn-json-viewer').click(renderJson);
 
         // Generate on option change
         $('p.options input[type=checkbox]').click(renderJson);
+
+        // Display JSON sample on page load
+        // renderJson();
+      });
+
+      (function () {
 
         var config = {
           baseUrl: "",
@@ -40,9 +46,6 @@
         var dependencies = ["customActivity"];
 
         require(config, dependencies);
-
-        // Display JSON sample on page load
-        renderJson();
       })();
     </script>
 
@@ -56,6 +59,7 @@
     <div id="step1" class="step">
       <h1>Telegram Activity App Configuration</h1>
       <textarea id="configuration" autocomplete="off">
+        
       </textarea>
       <p class="options">
         Options:
