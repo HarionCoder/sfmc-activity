@@ -7,7 +7,7 @@
     }
   },
   "metaData": {
-    "icon": "telegram/telegram-icon.png",
+    "icon": "images/telegram-icon.png",
     "category": "message",
     "isConfigured": true
   },
