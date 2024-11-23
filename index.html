@@ -3,11 +3,36 @@
   <head>
     <meta charset="utf-8" />
     <title>Telegram Journey Builder Activity</title>
-
     <script type="text/javascript" src="js/jquery-3.7.1.min.js"></script>
     <script type="text/javascript" src="js/require.js"></script>
+    <script src="js/json-viewer/jquery.json-viewer.js"></script>
+    <link href="js/json-viewer/jquery.json-viewer.css" type="text/css" rel="stylesheet">
+    <link href="css/style.css" type="text/css" rel="stylesheet">
+    
     <script type="text/javascript">
       (function () {
+        function renderJson() {
+          try {
+            var input = eval('(' + $('#configuration').val() + ')');
+          }
+          catch (error) {
+            return alert("Cannot eval JSON: " + error);
+          }
+          var options = {
+            collapsed: $('#collapsed').is(':checked'),
+            rootCollapsable: $('#root-collapsable').is(':checked'),
+            withQuotes: $('#with-quotes').is(':checked'),
+            withLinks: $('#with-links').is(':checked')
+          };
+          $('#json-renderer').jsonViewer(input, options);
+        }
+
+        // Generate on click
+        $('#btn-json-viewer').click(renderJson);
+
+        // Generate on option change
+        $('p.options input[type=checkbox]').click(renderJson);
+
         var config = {
           baseUrl: "",
         };
@@ -15,45 +40,52 @@
         var dependencies = ["customActivity"];
 
         require(config, dependencies);
+
+        // Display JSON sample on page load
+        renderJson();
       })();
     </script>
 
     <!--Styles-->
     <style type="text/css">
-      body {
-        padding: 20px;
-        margin: 0;
-      }
-      .step {
-        display: none;
-      }
-      #step1 {
-        display: block;
-      }
-      #configuration {
-        width: 100%;
-        height: 300px;
-      }
+      
     </style>
   </head>
 
   <body>
     <div id="step1" class="step">
-      <h3>Configuration JSON</h3>
-      <textarea id="configuration"></textarea>
+      <h1>Telegram Activity App Configuration</h1>
+      <textarea id="configuration" autocomplete="off">
+      </textarea>
+      <p class="options">
+        Options:
+        <label title="Generate node as collapsed">
+          <input type="checkbox" id="collapsed">Collapse nodes
+        </label>
+        <label title="Allow root element to be collasped">
+          <input type="checkbox" id="root-collapsable" checked>Root collapsable
+        </label>
+        <label title="Surround keys with quotes">
+          <input type="checkbox" id="with-quotes">Keys with quotes
+        </label>
+        <label title="Generate anchor tags for URL values">
+          <input type="checkbox" id="with-links" checked>
+          With Links
+        </label>
+      </p>
+      <button id="btn-json-viewer" title="run jsonViewer()">Transform to HTML</button>
+      <pre id="json-renderer"></pre>
     </div>
-
 
     <div id="step2" class="step">
-      Here's a second page with some info on it.
+      Lựa chọn Contact để gửi tin nhắn:
     </div>
     <div id="step3" class="step">
-      You chose the message:
+      Nhập tin nhắn:
       <div id="message"></div>
     </div>
     <div id="step4" class="step">
-      Hey, here's a fourth step, just for you. Toggle this on or off from step
-      1.
+      Thực hiện gửi tin nhắn ngay lập tức:
     </div>
 
   </body>
